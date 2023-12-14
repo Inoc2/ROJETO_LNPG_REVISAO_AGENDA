@@ -38,38 +38,43 @@ def generic_radio_button_two_options(option_1, option_2):
     current_height += 35
 
 def generic_label_status_send_information(text_from_user, exactly_height):
-    global current_height
-    if current_height == 0:
+    global current_height, tentative_users
+    if tentative_users == 0:
         label_status_user = Label(text = text_from_user, bg="red")
         label_status_user.place(x = 35, y = exactly_height)
     else:
-        label_status_user.config(tex)
+        label_status_user.config(text = text_from_user)
     tentative_users += 1
 
 def send_informations_button():
+    global current_height
     button_information = Button(text="Enviar informações", command=save_content)
     button_information.place(x=35, y=current_height)
     current_height += 35
     
 def save_content():
-    listaFormatada = [entrada.get() for entrada in current]
-    print(listaFormatada)
-    try:
-        listaFormatada = int(listaFormatada)
-    except:
-        send_informations_button("Você não inseriu um ano válido. Tente novamente", current_height + 35)
     
-    if listaFormatada[2] not in "@.":
+    while True:
+        global current_height
+        listaFormatada = [entrada.get() for entrada in current]
+        print(listaFormatada)
+        try:
+            listaFormatada[1] = int(listaFormatada[1])
+        except:
+            generic_label_status_send_information("Você não inseriu um ano válido. Tente novamente", current_height + 35)
+            break
+        if "@" not in listaFormatada[2] and ".com" not in listaFormatada[2]:
+            generic_label_status_send_information("Você não inseriu um email válido. Inclua @ e ponto")
+            break
+        with open ('contatos.txt', 'a', encoding='utf-8') as arquivo:
+            for x in listaFormatada:
+                # item = arquivo.readlines()
+                print(x)
         
+       
         
 
-def abrir_txt():
-    with open ('contatos.txt', 'r', encoding='utf-8') as arquivo:
-        
-        item = arquivo.readlines()
-        
-        for i in item:
-            print(i)
+
         
         
         
@@ -81,7 +86,6 @@ generic_label("E-mail")
 cria_caixa_de_texto()
 generic_radio_button_two_options("Sim", "Não")
 send_informations_button()
-abrir_txt()
 root.mainloop()
     
 
