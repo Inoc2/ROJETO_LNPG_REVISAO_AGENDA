@@ -6,6 +6,7 @@ from tkinter import *
 current_height = 35 #altura
 current = []
 root = Tk()
+tentative_users = 0
 root.geometry("750x750")
 root.title("Sistema de Agenda de Contatos")
 root.resizable(False, False)
@@ -36,11 +37,31 @@ def generic_radio_button_two_options(option_1, option_2):
     radio_button_two_options_option_2.place(x = 90, y = current_height)
     current_height += 35
 
-def send_informations_button():
+def generic_label_status_send_information(text_from_user, exactly_height):
     global current_height
-    button_information = Button(text="Enviar informações", )
+    if current_height == 0:
+        label_status_user = Label(text = text_from_user, bg="red")
+        label_status_user.place(x = 35, y = exactly_height)
+    else:
+        label_status_user.config(tex)
+    tentative_users += 1
+
+def send_informations_button():
+    button_information = Button(text="Enviar informações", command=save_content)
     button_information.place(x=35, y=current_height)
     current_height += 35
+    
+def save_content():
+    listaFormatada = [entrada.get() for entrada in current]
+    print(listaFormatada)
+    try:
+        listaFormatada = int(listaFormatada)
+    except:
+        send_informations_button("Você não inseriu um ano válido. Tente novamente", current_height + 35)
+    
+    if listaFormatada[2] not in "@.":
+        
+        
 
 def abrir_txt():
     with open ('contatos.txt', 'r', encoding='utf-8') as arquivo:
@@ -48,8 +69,10 @@ def abrir_txt():
         item = arquivo.readlines()
         
         for i in item:
-            interface.insert(END, i)
-            return
+            print(i)
+        
+        
+        
 generic_label("Nome:")
 cria_caixa_de_texto()
 generic_label("N° de telefone:")
@@ -58,6 +81,7 @@ generic_label("E-mail")
 cria_caixa_de_texto()
 generic_radio_button_two_options("Sim", "Não")
 send_informations_button()
+abrir_txt()
 root.mainloop()
     
 
